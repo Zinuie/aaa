@@ -1064,6 +1064,7 @@ export interface Locale {
     "audio": string;
     "audioFiles": string;
     "dataSaver": string;
+    "copyEmbedCode": string;
     "accountMigration": string;
     "accountMoved": string;
     "accountMovedShort": string;

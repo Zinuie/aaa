@@ -18,6 +18,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { clipsCache } from '@/cache.js';
 import { MenuItem } from '@/types/menu.js';
+import { getEmbedCode } from './get-embed-code';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
 
@@ -238,7 +239,17 @@ export function getNoteMenu(props: {
 	}
 
 	function openDetail(): void {
-		os.pageWindow(`/notes/${appearNote.id}`);
+		if (props.embed) {
+			window.open(`/notes/${appearNote.id}`, "_blank");
+		} else {
+			os.pageWindow(`/notes/${appearNote.id}`);
+		}
+	}
+
+	function copyEmbedCode(): void {
+		console.log(getEmbedCode({ entityType: 'notes', id: appearNote.id }));
+		copyToClipboard(getEmbedCode({ entityType: 'notes', id: appearNote.id }));
+		os.success();
 	}
 
 	async function translate(): Promise<void> {
@@ -286,7 +297,11 @@ export function getNoteMenu(props: {
 				icon: 'ti ti-share',
 				text: i18n.ts.share,
 				action: share,
-			}] : []),
+			}] : []), {
+				icon: 'ti ti-code',
+				text: i18n.ts.copyEmbedCode,
+				action: copyEmbedCode,
+			},
 			$i && $i.policies.canUseTranslator && instance.translatorAvailable ? {
 				icon: 'ti ti-language-hiragana',
 				text: i18n.ts.translate,
@@ -421,7 +436,11 @@ export function getNoteMenu(props: {
 			action: () => {
 				window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
 			},
-		} : undefined]
+		} : undefined, (!appearNote.url && !appearNote.uri) ? {
+			icon: 'ti ti-code',
+			text: i18n.ts.copyEmbedCode,
+			action: copyEmbedCode,
+		} : undefined,]
 			.filter(x => x !== undefined);
 	}
 

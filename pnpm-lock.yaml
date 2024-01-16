@@ -754,6 +754,9 @@ importers:
       idb-keyval:
         specifier: 6.2.1
         version: 6.2.1
+      iframe-resizer:
+        specifier: ^4.3.6
+        version: 4.3.6
       insert-text-at-cursor:
         specifier: 0.3.0
         version: 0.3.0
@@ -902,6 +905,9 @@ importers:
       '@types/estree':
         specifier: 1.0.5
         version: 1.0.5
+      '@types/iframe-resizer':
+        specifier: ^3.5.9
+        version: 3.5.9
       '@types/matter-js':
         specifier: 0.19.5
         version: 0.19.5
@@ -8147,6 +8153,10 @@ packages:
       '@types/node': 20.10.5
     dev: true
 
+  /@types/iframe-resizer@3.5.9:
+    resolution: {integrity: sha512-RQUBI75F+uXruB95BFpC/8V8lPgJg4MQ6HxOCtAZYBB/h0FNCfrFfb4I+u2pZJIV7sKeszZbFqy1UnGeBMrvsA==}
+    dev: true
+
   /@types/istanbul-lib-coverage@2.0.4:
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
     dev: true
@@ -13430,6 +13440,11 @@ packages:
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
+
+  /iframe-resizer@4.3.6:
+    resolution: {integrity: sha512-wz0WodRIF6eP0oGQa5NIP1yrITAZ59ZJvVaVJqJRjaeCtfm461vy2C3us6CKx0e7pooqpIGLpVMSTzrfAjX9Sg==}
+    engines: {node: '>=0.8.0'}
+    dev: false
 
   /ignore-by-default@1.0.1:
     resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}

@@ -155,6 +155,7 @@ export type Config = {
 	driveUrl: string;
 	userAgent: string;
 	clientEntry: string;
+	clientEmbedEntry: string;
 	clientManifestExists: boolean;
 	mediaProxy: string;
 	externalMediaProxyEnabled: boolean;
@@ -191,7 +192,10 @@ export function loadConfig(): Config {
 	const clientManifestExists = fs.existsSync(_dirname + '/../../../built/_vite_/manifest.json');
 	const clientManifest = clientManifestExists ?
 		JSON.parse(fs.readFileSync(`${_dirname}/../../../built/_vite_/manifest.json`, 'utf-8'))
-		: { 'src/_boot_.ts': { file: 'src/_boot_.ts' } };
+		: {
+			'src/_boot_.ts': { file: 'src/_boot_.ts' },
+			'src/embed/init.ts': { file: 'src/embed/init.ts' },
+		};
 	const config = yaml.load(fs.readFileSync(path, 'utf-8')) as Source;
 
 	const url = tryCreateUrl(config.url);
@@ -256,6 +260,7 @@ export function loadConfig(): Config {
 			: null,
 		userAgent: `Misskey/${version} (${config.url})`,
 		clientEntry: clientManifest['src/_boot_.ts'],
+		clientEmbedEntry: clientManifest['src/embed/init.ts'],
 		clientManifestExists: clientManifestExists,
 		perChannelMaxNoteCacheCount: config.perChannelMaxNoteCacheCount ?? 1000,
 		perUserNotificationsMaxCount: config.perUserNotificationsMaxCount ?? 500,
