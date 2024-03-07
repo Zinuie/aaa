@@ -9,6 +9,7 @@
 - Enhance: リアクション・いいねの総数を表示するように
 - Enhance: リアクション受け入れが「いいねのみ」の場合はリアクション絵文字一覧を表示しないように
 - Fix: 一部のページ内リンクが正しく動作しない問題を修正
+- Fix: 通知が重複して受信される問題を修正 (Cherry-picked from https://github.com/MisskeyIO/misskey/pull/504)
 
 ### Server
 -
