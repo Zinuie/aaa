@@ -9,16 +9,25 @@ export type {
 
 const MK_API_ERROR = Symbol();
 
-export type APIError = {
-	id: string;
-	code: string;
-	message: string;
-	kind: 'client' | 'server';
-	info: Record<string, any>;
-};
+export class APIError<ER extends Endpoints[keyof Endpoints]['errors'] = {}> extends Error {
 
-export function isAPIError(reason: Record<PropertyKey, unknown>): reason is APIError {
-	return reason[MK_API_ERROR] === true;
+	public payload;
+	public readonly [MK_API_ERROR] = true;
+
+	constructor(response: ER extends Record<string, never> ? {
+		id: string;
+		code: string;
+		message: string;
+		kind: 'client' | 'server';
+		info: Record<string, any>;
+	} : ER) {
+		super('message' in response ? response.message : 'API Error');
+		this.payload = response;
+	}
+}
+
+export function isAPIError<ER extends Endpoints[keyof Endpoints]['errors']>(reason: any): reason is APIError<ER> {
+	return reason instanceof Error && MK_API_ERROR in reason;
 }
 
 export type FetchLike = (input: string, init?: {
@@ -49,7 +58,8 @@ export class APIClient {
 		this.fetch = opts.fetch ?? ((...args) => fetch(...args));
 	}
 
-	public request<E extends keyof Endpoints, P extends Endpoints[E]['req']>(
+
+	public request<E extends keyof Endpoints, P extends Endpoints[E]['req'], ER extends Endpoints[E]['errors']>(
 		endpoint: E,
 		params: P = {} as P,
 		credential?: string | null,
@@ -72,12 +82,11 @@ export class APIClient {
 				if (res.status === 200 || res.status === 204) {
 					resolve(body);
 				} else {
-					reject({
-						[MK_API_ERROR]: true,
-						...body.error,
-					});
+					reject(new APIError<ER>(body.error));
 				}
-			}).catch(reject);
+			}).catch((reason) => {
+				reject(new Error(reason));
+			});
 		});
 	}
 }
