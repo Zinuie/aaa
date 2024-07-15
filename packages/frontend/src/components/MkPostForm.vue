@@ -187,7 +187,7 @@ const showAddMfmFunction = ref(defaultStore.state.enableQuickAddMfmFunction);
 watch(showAddMfmFunction, () => defaultStore.set('enableQuickAddMfmFunction', showAddMfmFunction.value));
 const cw = ref<string | null>(props.initialCw ?? null);
 const localOnly = ref(props.initialLocalOnly ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly));
-const visibility = ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility));
+const visibility = ref<Misskey.entities.Note['visibility']>(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility) as Misskey.entities.Note['visibility']);
 const visibleUsers = ref<Misskey.entities.UserDetailed[]>([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(u => pushVisibleUser(u));
@@ -433,7 +433,7 @@ function detachFile(id) {
 	files.value = files.value.filter(x => x.id !== id);
 }
 
-function updateFileSensitive(file, sensitive) {
+function updateFileSensitive(file: Misskey.entities.DriveFile, sensitive: boolean) {
 	if (props.mock) {
 		emit('fileChangeSensitive', file.id, sensitive);
 	}
@@ -448,12 +448,19 @@ function replaceFile(file: Misskey.entities.DriveFile, newFile: Misskey.entities
 	files.value[files.value.findIndex(x => x.id === file.id)] = newFile;
 }
 
-function upload(file: File, name?: string): void {
+async function upload(file: File, name?: string, keepOriginal?: boolean, options?: { isSensitive?: boolean, comment?: string | null }, token?: string): Promise<Misskey.entities.DriveFile | void> {
 	if (props.mock) return;
 
-	uploadFile(file, defaultStore.state.uploadFolder, name).then(res => {
+	let uploaded : Misskey.entities.DriveFile | null = null;
+
+	await uploadFile(file, defaultStore.state.uploadFolder, name, keepOriginal, options, token).then(res => {
 		files.value.push(res);
+		uploaded = res;
 	});
+
+	if (uploaded != null) {
+		return uploaded;
+	}
 }
 
 function setVisibility() {
@@ -772,6 +779,23 @@ async function post(ev?: MouseEvent) {
 		}
 	}
 
+	let token: string | undefined = undefined;
+
+	if (postAccount.value) {
+		const storedAccounts = await getAccounts();
+		token = storedAccounts.find(x => x.id === postAccount.value?.id)?.token;
+
+		// 投稿ユーザーが現在のユーザーと違う場合に再アップロードを行う
+		// もしアカウントに応じたアップロードが実装された場合は削除が必要
+		if (token != null) {
+			for (let f of files.value) {
+				const fileBase = await fetch(f.url).then(res => res.blob()).then(blob => new File([blob], f.name, { type: blob.type }));
+				detachFile(f.id);
+				await upload(fileBase, f.name, undefined, { isSensitive: f.isSensitive, comment: f.comment }, token);
+			}
+		}
+	}
+
 	let postData = {
 		text: text.value === '' ? null : text.value,
 		fileIds: files.value.length > 0 ? files.value.map(f => f.id) : undefined,
@@ -810,13 +834,6 @@ async function post(ev?: MouseEvent) {
 				console.error(err);
 			}
 		}
-	}
-
-	let token: string | undefined = undefined;
-
-	if (postAccount.value) {
-		const storedAccounts = await getAccounts();
-		token = storedAccounts.find(x => x.id === postAccount.value?.id)?.token;
 	}
 
 	posting.value = true;

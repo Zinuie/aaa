@@ -34,8 +34,15 @@ export function uploadFile(
 	folder?: any,
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
+	options?: {
+		isSensitive?: boolean,
+		comment?: string | null,
+	},
+	token?: string,
 ): Promise<Misskey.entities.DriveFile> {
-	if ($i == null) throw new Error('Not logged in');
+	if ($i == null && token == null) throw new Error('Not logged in');
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	const tokenToUse = token ?? $i!.token;
 
 	if (folder && typeof folder === 'object') folder = folder.id;
 
@@ -79,10 +86,14 @@ export function uploadFile(
 			}
 
 			const formData = new FormData();
-			formData.append('i', $i.token);
+			formData.append('i', tokenToUse);
 			formData.append('force', 'true');
 			formData.append('file', resizedImage ?? file);
 			formData.append('name', ctx.name);
+			if (options != null) {
+				if (options.isSensitive === true) formData.append('isSensitive', 'true');
+				if (options.comment != null) formData.append('comment', options.comment);
+			}
 			if (folder) formData.append('folderId', folder);
 
 			const xhr = new XMLHttpRequest();
