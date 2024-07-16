@@ -1248,6 +1248,8 @@ noDescription: "説明文はありません"
 alwaysConfirmFollow: "フォローの際常に確認する"
 inquiry: "お問い合わせ"
 tryAgain: "もう一度お試しください。"
+resolvedByX: "{user}によって解決済み"
+forwardedReport: "リモートサーバーに転送済み"
 
 _delivery:
   status: "配信状態"

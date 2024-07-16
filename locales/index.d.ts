@@ -5008,6 +5008,14 @@ export interface Locale extends ILocale {
      * もう一度お試しください。
      */
     "tryAgain": string;
+    /**
+     * {user}によって解決済み
+     */
+    "resolvedByX": ParameterizedString<"user">;
+    /**
+     * リモートサーバーに転送済み
+     */
+    "forwardedReport": string;
     "_delivery": {
         /**
          * 配信状態

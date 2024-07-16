@@ -20,6 +20,8 @@
   (Based on https://github.com/taiyme/misskey/pull/226)
 - Enhance: サーバー情報ページ・お問い合わせページを改善  
   (Cherry-picked from https://github.com/taiyme/misskey/pull/238)
+- Enhance: 通報の管理画面を改善  
+  (Cherry-picked from https://github.com/taiyme/misskey/pull/222)
 - Fix: `/about#federation` ページなどで各インスタンスのチャートが表示されなくなっていた問題を修正
 - Fix: ユーザーページの追加情報のラベルを投稿者のサーバーの絵文字で表示する (#13968)
 - Fix: リバーシの対局を正しく共有できないことがある問題を修正
