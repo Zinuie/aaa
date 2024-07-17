@@ -30,6 +30,7 @@
 - Fix: ショートカットキーが連打できる問題を修正  
   (Cherry-picked from https://github.com/taiyme/misskey/pull/234)
 - Fix: MkSignin.vueのcredentialRequestからReactivityを削除（ProxyがPasskey認証処理に渡ることを避けるため）
+- ノートを畳む条件を「高精度の算出方法（MFMの引数なども考慮する）」、「旧式の算出方法（従来通り）」、「実際の表示の大きさ」から選べるように
 
 ### Server
 - Feat: レートリミット制限に引っかかったときに`Retry-After`ヘッダーを返すように (#13949)
