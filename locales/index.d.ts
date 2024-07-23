@@ -4657,9 +4657,17 @@ export interface Locale extends ILocale {
      */
     "renotes": string;
     /**
+     * 引用
+     */
+    "quotes": string;
+    /**
      * 返信を見る
      */
     "loadReplies": string;
+    /**
+     * 引用を見る
+     */
+    "loadQuotes": string;
     /**
      * 会話を見る
      */
