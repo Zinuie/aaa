@@ -16,6 +16,8 @@
   - 通知ページや通知カラム(デッキ)を開いている状態において、新たに発生した通知が既読されない問題が修正されます。
   - これにより、プッシュ通知が有効な同条件下の環境において、プッシュ通知が常に発生してしまう問題も修正されます。
 - Fix: Play各種エンドポイントの返り値に`visibility`が含まれていない問題を修正
+- Fix: Prevent memory leak from memory caches (#14310)
+- Fix: More reliable memory cache eviction (#14311)
 
 ## 2024.7.0
 
