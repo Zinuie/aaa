@@ -4934,6 +4934,8 @@ export type components = {
       translatorAvailable: boolean;
       mediaProxy: string;
       enableUrlPreview: boolean;
+      /** @enum {string} */
+      preferPopularUserFactor: 'follower' | 'pv' | 'none';
       backgroundImageUrl: string | null;
       impressumUrl: string | null;
       logoImageUrl: string | null;
@@ -5135,6 +5137,8 @@ export type operations = {
             urlPreviewRequireContentLength: boolean;
             urlPreviewUserAgent: string | null;
             urlPreviewSummaryProxyUrl: string | null;
+            /** @enum {string} */
+            preferPopularUserFactor: 'follower' | 'pv' | 'none';
           };
         };
       };
@@ -9384,6 +9388,8 @@ export type operations = {
           urlPreviewRequireContentLength?: boolean;
           urlPreviewUserAgent?: string | null;
           urlPreviewSummaryProxyUrl?: string | null;
+          /** @enum {string} */
+          preferPopularUserFactor?: 'follower' | 'pv' | 'none';
         };
       };
     };
@@ -25003,7 +25009,7 @@ export type operations = {
           /** @default 0 */
           offset?: number;
           /** @enum {string} */
-          sort?: '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+updatedAt' | '-updatedAt';
+          sort?: '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+updatedAt' | '-updatedAt' | '+pv' | '-pv';
           /**
            * @default all
            * @enum {string}
