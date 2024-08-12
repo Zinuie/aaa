@@ -186,6 +186,7 @@ export interface IActor extends IObject {
 	following?: string | ICollection | IOrderedCollection;
 	featured?: string | IOrderedCollection;
 	outbox: string | IOrderedCollection;
+	liked?: string | ICollection | IOrderedCollection;
 	endpoints?: {
 		sharedInbox?: string;
 	};
