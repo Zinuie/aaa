@@ -1172,6 +1172,7 @@ declare namespace entities {
     export {
         ID,
         DateString,
+        Renote,
         PageEvent,
         ModerationLog,
         ServerStats,
@@ -2278,6 +2279,9 @@ type ISigninHistoryRequest = operations['i___signin-history']['requestBody']['co
 type ISigninHistoryResponse = operations['i___signin-history']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+function isRenote(note: Note): note is Renote;
+
+// @public (undocumented)
 type IUnpinRequest = operations['i___unpin']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -2509,6 +2513,13 @@ type MyAppsResponse = operations['my___apps']['responses']['200']['content']['ap
 
 // @public (undocumented)
 type Note = components['schemas']['Note'];
+
+declare namespace note {
+    export {
+        isRenote
+    }
+}
+export { note }
 
 // @public (undocumented)
 type NoteFavorite = components['schemas']['NoteFavorite'];
@@ -2771,6 +2782,15 @@ type QueueStats = {
 
 // @public (undocumented)
 type QueueStatsLog = QueueStats[];
+
+// Warning: (ae-forgotten-export) The symbol "AllNullRecord" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "NonNullableRecord" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+type Renote = Omit<Note, 'renote' | 'renoteId' | 'reply' | 'replyId' | 'text' | 'cw' | 'files' | 'fileIds' | 'poll'> & AllNullRecord<Pick<Note, 'reply' | 'replyId' | 'text' | 'cw' | 'poll'>> & {
+    files: [];
+    fileIds: [];
+} & NonNullableRecord<Pick<Note, 'renote' | 'renoteId'>>;
 
 // @public (undocumented)
 type RenoteMuteCreateRequest = operations['renote-mute___create']['requestBody']['content']['application/json'];
@@ -3226,7 +3246,7 @@ type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['
 
 // Warnings were encountered during analysis:
 //
-// src/entities.ts:35:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:49:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:220:4 - (ae-forgotten-export) The symbol "ReversiUpdateKey" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:230:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
 
