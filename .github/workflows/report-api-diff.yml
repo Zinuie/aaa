@@ -82,13 +82,13 @@ jobs:
 
           [Get diff files from Workflow Page](https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})
           EOF
-      - uses: thollander/actions-comment-pull-request@v2
+      - uses: thollander/actions-comment-pull-request@v3
         with:
           pr_number: ${{ steps.load-pr-num.outputs.pr-number }}
           comment_tag: show_diff
           filePath: ./output.md
       - name: Tell error to PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         if: failure() && steps.load-pr-num.outputs.pr-number
         with:
           pr_number: ${{ steps.load-pr-num.outputs.pr-number }}
